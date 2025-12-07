@@ -10,8 +10,8 @@ This is a **Streamlit-based dashboard** that allows users to explore NYC MTA rid
 
 The data used for this project comes from:
 
-1. **MTA Ridership Data**: Hourly and daily ridership counts across NYC transit routes.
-2. **Weather Data**: Historical weather data including temperature, precipitation, and other relevant metrics.
+1. [**MTA Ridership Data**](https://data.ny.gov/Transportation/MTA-Subway-Hourly-Ridership-2020-2024/wujg-7c2s/about_data): Hourly and daily ridership counts across NYC transit routes.
+2. [**Weather Data**](https://open-meteo.com/en/docs/historical-weather-api): Historical weather data including temperature, precipitation, and other relevant metrics.
 
 These datasets are fetched and merged programmatically to allow integrated analysis of ridership and weather trends over time.
 
@@ -59,7 +59,7 @@ Before you can set up and run this app, ensure you have the following software i
 
 ```bash
 git clone https://github.com/mgalarneau/NYC-Transit-Project.git
-cd nyc-mta-dashboard
+cd NYC-Transit-Project
 ```
 
 ### 2. Create a Virtual Environment (Optional but Recommended)
@@ -167,5 +167,6 @@ To run the app on your local machine:
 pip install -r requirements.txt
 
 ## 2. Run the streamlit app:
+
 streamlit run app.py
 
