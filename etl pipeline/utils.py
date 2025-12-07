@@ -1,115 +1,133 @@
-"""
-Utility Functions
-Helper functions used across the pipeline
-"""
+# utils.py – Helper Functions for NYC MTA Dashboard
 
-import logging
-import os
-from datetime import datetime, timedelta
-from typing import List, Dict, Any
 import pandas as pd
+import numpy as np
+from scipy import stats
+import plotly.graph_objects as go
 
-logger = logging.getLogger(__name__)
 
-
-def setup_logging(log_dir: str = 'logs', log_level: str = 'INFO'):
+def interpret_correlation(r: float) -> str:
     """
-    Set up logging configuration
+    Interpret correlation coefficient strength and direction.
     
     Args:
-        log_dir: Directory for log files
-        log_level: Logging level
-    """
-    os.makedirs(log_dir, exist_ok=True)
-    
-    logging.basicConfig(
-        level=getattr(logging, log_level),
-        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-        handlers=[
-            logging.FileHandler(f'{log_dir}/pipeline_{datetime.now().strftime("%Y%m%d")}.log'),
-            logging.StreamHandler()
-        ]
-    )
-
-
-def validate_date_format(date_str: str) -> bool:
-    """
-    Validate date string format
-    
-    Args:
-        date_str: Date string to validate
-    
+        r (float): Correlation coefficient.
+        
     Returns:
-        True if valid, False otherwise
+        str: Description of correlation strength and direction.
+    """
+    abs_r = abs(r)
+    if abs_r > 0.7:
+        strength = "Very Strong"
+    elif abs_r > 0.5:
+        strength = "Strong"
+    elif abs_r > 0.3:
+        strength = "Moderate"
+    elif abs_r > 0.1:
+        strength = "Weak"
+    else:
+        strength = "Very Weak"
+    
+    direction = "Positive" if r > 0 else "Negative"
+    return f"{strength} {direction}"
+
+
+def create_qq_plot(data: pd.Series, title: str) -> go.Figure | None:
+    """
+    Create a Q-Q plot for normality assessment using Plotly.
+    
+    Args:
+        data (pd.Series): Numeric data series.
+        title (str): Title for the plot.
+        
+    Returns:
+        go.Figure | None: Plotly figure or None if insufficient data.
     """
     try:
-        datetime.strptime(date_str, '%Y-%m-%d')
-        return True
-    except ValueError:
-        return False
+        data_clean = data.dropna()
+        if len(data_clean) < 10:
+            return None
+
+        qq = stats.probplot(data_clean, dist="norm")
+        
+        fig = go.Figure()
+
+        # Add scatter points
+        fig.add_trace(go.Scatter(
+            x=qq[0][0],
+            y=qq[0][1],
+            mode='markers',
+            name='Data',
+            marker=dict(color='blue', size=4)
+        ))
+
+        # Add reference line
+        fig.add_trace(go.Scatter(
+            x=qq[0][0],
+            y=qq[1][0] * qq[0][0] + qq[1][1],
+            mode='lines',
+            name='Normal',
+            line=dict(color='red', dash='dash')
+        ))
+
+        fig.update_layout(
+            title=f"Q-Q Plot: {title}",
+            xaxis_title="Theoretical Quantiles",
+            yaxis_title="Sample Quantiles",
+            showlegend=True,
+            height=300
+        )
+
+        return fig
+    except Exception as e:
+        print(f"Error creating Q-Q plot: {e}")
+        return None
 
 
-def get_date_range(days_back: int = 365) -> tuple:
+def safe_divide(numerator: float, denominator: float) -> float:
     """
-    Get date range for data extraction
+    Safely divide two numbers, returning np.nan if denominator is zero.
     
     Args:
-        days_back: Number of days to go back from today
-    
+        numerator (float): Numerator.
+        denominator (float): Denominator.
+        
     Returns:
-        Tuple of (start_date, end_date) as strings
+        float: Result of division or np.nan.
     """
-    end_date = datetime.now()
-    start_date = end_date - timedelta(days=days_back)
-    
-    return (
-        start_date.strftime('%Y-%m-%d'),
-        end_date.strftime('%Y-%m-%d')
-    )
+    try:
+        return numerator / denominator if denominator != 0 else np.nan
+    except Exception:
+        return np.nan
 
 
-def calculate_data_size(df: pd.DataFrame) -> Dict[str, float]:
+def convert_fahrenheit(celsius: float) -> float:
     """
-    Calculate size metrics for DataFrame
+    Convert Celsius to Fahrenheit.
     
     Args:
-        df: DataFrame to analyze
-    
+        celsius (float): Temperature in Celsius.
+        
     Returns:
-        Dictionary with size metrics
+        float: Temperature in Fahrenheit.
     """
-    memory_usage = df.memory_usage(deep=True).sum()
-    
-    return {
-        'rows': len(df),
-        'columns': len(df.columns),
-        'memory_mb': round(memory_usage / (1024 * 1024), 2),
-        'cells': df.size
-    }
+    try:
+        return celsius * 9/5 + 32
+    except Exception:
+        return np.nan
 
 
-def print_dataframe_summary(df: pd.DataFrame, name: str = "DataFrame"):
+def convert_inches(mm: float) -> float:
     """
-    Print a formatted summary of DataFrame
+    Convert millimeters to inches.
     
     Args:
-        df: DataFrame to summarize
-        name: Name for the summary
+        mm (float): Precipitation in millimeters.
+        
+    Returns:
+        float: Precipitation in inches.
     """
-    print(f"\n{'=' * 60}")
-    print(f"{name} Summary")
-    print('=' * 60)
-    print(f"Shape: {df.shape[0]} rows × {df.shape[1]} columns")
-    print(f"Memory: {df.memory_usage(deep=True).sum() / 1024**2:.2f} MB")
-    print(f"\nColumns: {', '.join(df.columns)}")
-    print(f"\nData Types:\n{df.dtypes.value_counts()}")
-    print(f"\nNull Values:\n{df.isnull().sum()[df.isnull().sum() > 0]}")
-    print('=' * 60)
-
-
-if __name__ == "__main__":
-    # Test utilities
-    print("Testing utility functions...")
-    
-    print(f"\nDate validation: {validate_date_format('2024-01-01')}")
-    print(f"Date range: {get_date_range(30)}")
+    try:
+        return mm / 25.4
+    except Exception:
+        return np.nan

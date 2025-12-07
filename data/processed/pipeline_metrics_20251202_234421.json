@@ -1,0 +1,57 @@
+{
+  "start_time": "2025-12-02T23:43:20.416630",
+  "end_time": "2025-12-02T23:44:21.315796",
+  "status": "SUCCESS",
+  "records_processed": 57365,
+  "errors": [],
+  "transformation": {
+    "output_records": 57365,
+    "output_columns": 27,
+    "duration_seconds": 0.14,
+    "quality_metrics": {
+      "ridership": {
+        "dataset": "ridership",
+        "initial_rows": 57365,
+        "timestamp": "2025-12-02T23:44:13.646019",
+        "date_range": {
+          "min": "2024-12-08 22:00:00",
+          "max": "2024-12-31 23:00:00"
+        },
+        "final_rows": 57365,
+        "rows_removed": 0,
+        "quality_score": 100.0,
+        "status": "PASSED"
+      },
+      "weather": {
+        "dataset": "weather",
+        "initial_rows": 366,
+        "timestamp": "2025-12-02T23:44:13.691060",
+        "date_range": {
+          "min": "2024-12-02 00:00:00",
+          "max": "2025-12-02 00:00:00"
+        },
+        "final_rows": 366,
+        "rows_removed": 0,
+        "quality_score": 100.0,
+        "status": "PASSED"
+      }
+    }
+  },
+  "loading": {
+    "csv_path": "data/processed\\transit_weather_20251202_234413_20251202_234413.csv",
+    "summary_path": "data/processed\\summary_stats_20251202_234413_20251202_234414.csv",
+    "database_success": false,
+    "duration_seconds": 7.51,
+    "load_metrics": {
+      "csv": {
+        "filepath": "data/processed\\transit_weather_analytics_backup_20251202_234420.csv",
+        "records": 57365,
+        "size_mb": 10.61,
+        "timestamp": "2025-12-02T23:44:21.298593"
+      }
+    }
+  },
+  "total_duration_seconds": 7.65,
+  "quality_score": 100.0,
+  "success_rate": 100.0
+}

@@ -1,0 +1,285 @@
+2025-12-02 23:43:20,416 - __main__ - INFO - ======================================================================
+2025-12-02 23:43:20,416 - __main__ - INFO -  STARTING NYC TRANSIT WEATHER ANALYTICS PIPELINE
+2025-12-02 23:43:20,416 - __main__ - INFO - ======================================================================
+2025-12-02 23:43:20,417 - __main__ - INFO -  Date Range: 2024-12-02 to 2025-12-02
+2025-12-02 23:43:20,417 - __main__ - INFO -  Save to Database: True
+2025-12-02 23:43:20,417 - __main__ - INFO - Extracting ridership data...
+2025-12-02 23:43:20,417 - data_extraction - INFO - ======================================================================
+2025-12-02 23:43:20,418 - data_extraction - INFO - FETCHING RIDERSHIP: 2024-12-02 to 2025-12-02
+2025-12-02 23:43:20,418 - data_extraction - INFO - Strategy: Fetch day-by-day to avoid API limits
+2025-12-02 23:43:20,418 - data_extraction - INFO - ======================================================================
+2025-12-02 23:43:20,418 - data_extraction - INFO - Will fetch 366 days, ~1639 records per day
+2025-12-02 23:43:21,755 - data_extraction - INFO - Week 2024-12-02 to 2024-12-08: 11473 records | Total: 11473
+2025-12-02 23:43:23,363 - data_extraction - INFO - Week 2024-12-09 to 2024-12-15: 11473 records | Total: 22946
+2025-12-02 23:43:24,481 - data_extraction - INFO - Week 2024-12-16 to 2024-12-22: 11473 records | Total: 34419
+2025-12-02 23:43:25,642 - data_extraction - INFO - Week 2024-12-23 to 2024-12-29: 11473 records | Total: 45892
+2025-12-02 23:43:26,859 - data_extraction - INFO - Week 2024-12-30 to 2025-01-05: 11473 records | Total: 57365
+2025-12-02 23:44:12,757 - data_extraction - INFO - TOTAL FETCHED: 57365 records
+2025-12-02 23:44:12,877 - data_extraction - INFO - Final: 57365 records from 2024-12-08 22:00:00 to 2024-12-31 23:00:00
+2025-12-02 23:44:12,880 - __main__ - INFO -  Ridership: 57365 records
+2025-12-02 23:44:12,880 - __main__ - INFO - Extracting weather data...
+2025-12-02 23:44:13,644 - data_extraction - INFO - Weather: 366 records from 2024-12-02 to 2025-12-02
+2025-12-02 23:44:13,645 - __main__ - INFO -  Weather: 366 records
+2025-12-02 23:44:13,645 - data_transformation - INFO - ============================================================
+2025-12-02 23:44:13,645 - data_transformation - INFO - STARTING DATA TRANSFORMATION AND MERGE
+2025-12-02 23:44:13,645 - data_transformation - INFO - ============================================================
+2025-12-02 23:44:13,645 - data_transformation - INFO - Validating ridership data quality...
+2025-12-02 23:44:13,646 - data_transformation - INFO - Running schema validation...
+2025-12-02 23:44:13,646 - data_transformation - INFO - Checking for null values...
+2025-12-02 23:44:13,662 - data_transformation - INFO - Checking for duplicates (full row)...
+2025-12-02 23:44:13,686 - data_transformation - INFO - Date range: 2024-12-08 22:00:00 to 2024-12-31 23:00:00
+2025-12-02 23:44:13,688 - data_transformation - INFO - ridership: 555 potential outliers detected
+2025-12-02 23:44:13,690 - data_transformation - INFO - transfers: 467 potential outliers detected
+2025-12-02 23:44:13,690 - data_transformation - INFO - Quality validation complete: 100.00% data retained
+2025-12-02 23:44:13,690 - data_transformation - INFO - Status: PASSED
+2025-12-02 23:44:13,690 - data_transformation - INFO - Validating weather data quality...
+2025-12-02 23:44:13,691 - data_transformation - INFO - Running schema validation...
+2025-12-02 23:44:13,691 - data_transformation - INFO - Checking for null values...
+2025-12-02 23:44:13,692 - data_transformation - INFO - Checking for duplicates (full row)...
+2025-12-02 23:44:13,693 - data_transformation - INFO - Date range: 2024-12-02 00:00:00 to 2025-12-02 00:00:00
+2025-12-02 23:44:13,694 - data_transformation - INFO - temperature_mean: 8 potential outliers detected
+2025-12-02 23:44:13,695 - data_transformation - INFO - precipitation: 4 potential outliers detected
+2025-12-02 23:44:13,696 - data_transformation - INFO - windspeed: 7 potential outliers detected
+2025-12-02 23:44:13,696 - data_transformation - INFO - Quality validation complete: 100.00% data retained
+2025-12-02 23:44:13,696 - data_transformation - INFO - Status: PASSED
+2025-12-02 23:44:13,733 - data_transformation - INFO - Adding derived features...
+2025-12-02 23:44:13,760 - data_transformation - INFO - Added 24 derived features
+2025-12-02 23:44:13,784 - data_transformation - INFO - ============================================================
+2025-12-02 23:44:13,785 - data_transformation - INFO - TRANSFORMATION COMPLETE
+2025-12-02 23:44:13,785 - data_transformation - INFO - Final dataset: 57365 rows × 27 columns
+2025-12-02 23:44:13,785 - data_transformation - INFO - Final quality score: 100.00%
+2025-12-02 23:44:13,785 - data_transformation - INFO - ============================================================
+2025-12-02 23:44:14,174 - data_loading - INFO - ✅ Saved 57365 records to data/processed\transit_weather_20251202_234413_20251202_234413.csv (10.61 MB)
+2025-12-02 23:44:14,174 - data_loading - INFO - Creating summary statistics...
+2025-12-02 23:44:14,177 - data_loading - INFO - ✅ Saved 9 records to data/processed\summary_stats_20251202_234413_20251202_234414.csv (0.00 MB)
+2025-12-02 23:44:14,184 - botocore.credentials - INFO - Found credentials in environment variables.
+2025-12-02 23:44:15,918 - data_loading - INFO - ✅ Uploaded data/processed\transit_weather_20251202_234413_20251202_234413.csv to s3://nyc-transit-weather/transit_weather/transit_weather_20251202_234413_20251202_234413.csv
+2025-12-02 23:44:16,668 - data_loading - INFO - ✅ Uploaded data/processed\summary_stats_20251202_234413_20251202_234414.csv to s3://nyc-transit-weather/transit_weather/summary_stats_20251202_234413_20251202_234414.csv
+2025-12-02 23:44:16,670 - data_loading - INFO - Loading data to PostgreSQL table: transit_weather_analytics
+2025-12-02 23:44:20,788 - data_loading - ERROR - Failed to load to PostgreSQL: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 5432 failed: Connection refused (0x0000274D/10061)
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "localhost" (127.0.0.1), port 5432 failed: Connection refused (0x0000274D/10061)
+	Is the server running on that host and accepting TCP/IP connections?
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-12-02 23:44:20,788 - data_loading - INFO - Falling back to CSV save...
+2025-12-02 23:44:21,298 - data_loading - INFO - ✅ Saved 57365 records to data/processed\transit_weather_analytics_backup_20251202_234420.csv (10.61 MB)
+2025-12-02 23:44:21,316 - __main__ - INFO - Pipeline metrics saved to data/processed/pipeline_metrics_20251202_234421.json
+2025-12-02 23:44:21,317 - __main__ - INFO - PIPELINE COMPLETED SUCCESSFULLY!
+2025-12-07 11:44:57,577 - __main__ - INFO - 
+======================================================================
+2025-12-07 11:44:57,578 - __main__ - INFO - NYC TRANSIT WEATHER ANALYTICS PIPELINE
+2025-12-07 11:44:57,578 - __main__ - INFO - ======================================================================
+
+2025-12-07 11:44:57,578 - __main__ - INFO - Configuration:
+2025-12-07 11:44:57,578 - __main__ - INFO -   Start Date: 2023-01-01
+2025-12-07 11:44:57,578 - __main__ - INFO -   End Date: today
+2025-12-07 11:44:57,578 - __main__ - INFO -   Max Records: 600,000
+2025-12-07 11:44:57,578 - __main__ - INFO -   Save to DB: True
+2025-12-07 11:44:57,578 - __main__ - INFO - 
+2025-12-07 11:44:57,578 - __main__ - INFO - ======================================================================
+2025-12-07 11:44:57,578 - __main__ - INFO -  STARTING NYC TRANSIT WEATHER ANALYTICS PIPELINE
+2025-12-07 11:44:57,578 - __main__ - INFO - ======================================================================
+2025-12-07 11:44:57,578 - __main__ - INFO -  Date Range: 2023-01-01 to 2025-12-07
+2025-12-07 11:44:57,579 - __main__ - INFO -  Max Records: 600,000
+2025-12-07 11:44:57,579 - __main__ - INFO -  Save to Database: True
+2025-12-07 11:44:57,579 - __main__ - INFO - 
+============================================================
+2025-12-07 11:44:57,579 - __main__ - INFO - PHASE 1: DATA EXTRACTION
+2025-12-07 11:44:57,579 - __main__ - INFO - ============================================================
+2025-12-07 11:44:57,579 - __main__ - INFO - Extracting ridership data...
+2025-12-07 11:44:57,579 - data_extraction - INFO - ======================================================================
+2025-12-07 11:44:57,579 - data_extraction - INFO - FETCHING RIDERSHIP: 2023-01-01 to 2025-12-07
+2025-12-07 11:44:57,579 - data_extraction - INFO - Strategy: Fetch day-by-day to avoid API limits
+2025-12-07 11:44:57,580 - data_extraction - INFO - ======================================================================
+2025-12-07 11:44:57,580 - data_extraction - INFO - Will fetch 1072 days, ~559 records per day
+2025-12-07 11:44:58,272 - data_extraction - INFO - Week 2023-01-01 to 2023-01-07: 3913 records | Total: 3913
+2025-12-07 11:44:59,366 - data_extraction - INFO - Week 2023-01-08 to 2023-01-14: 3913 records | Total: 7826
+2025-12-07 11:45:00,515 - data_extraction - INFO - Week 2023-01-15 to 2023-01-21: 3913 records | Total: 11739
+2025-12-07 11:45:01,512 - data_extraction - INFO - Week 2023-01-22 to 2023-01-28: 3913 records | Total: 15652
+2025-12-07 11:45:02,586 - data_extraction - INFO - Week 2023-01-29 to 2023-02-04: 3913 records | Total: 19565
+2025-12-07 11:45:03,689 - data_extraction - INFO - Week 2023-02-05 to 2023-02-11: 3913 records | Total: 23478
+2025-12-07 11:45:04,752 - data_extraction - INFO - Week 2023-02-12 to 2023-02-18: 3913 records | Total: 27391
+2025-12-07 11:45:05,834 - data_extraction - INFO - Week 2023-02-19 to 2023-02-25: 3913 records | Total: 31304
+2025-12-07 11:45:06,930 - data_extraction - INFO - Week 2023-02-26 to 2023-03-04: 3913 records | Total: 35217
+2025-12-07 11:45:08,022 - data_extraction - INFO - Week 2023-03-05 to 2023-03-11: 3913 records | Total: 39130
+2025-12-07 11:45:09,048 - data_extraction - INFO - Week 2023-03-12 to 2023-03-18: 3913 records | Total: 43043
+2025-12-07 11:45:10,144 - data_extraction - INFO - Week 2023-03-19 to 2023-03-25: 3913 records | Total: 46956
+2025-12-07 11:45:11,328 - data_extraction - INFO - Week 2023-03-26 to 2023-04-01: 3913 records | Total: 50869
+2025-12-07 11:45:12,488 - data_extraction - INFO - Week 2023-04-02 to 2023-04-08: 3913 records | Total: 54782
+2025-12-07 11:45:13,795 - data_extraction - INFO - Week 2023-04-09 to 2023-04-15: 3913 records | Total: 58695
+2025-12-07 11:45:14,886 - data_extraction - INFO - Week 2023-04-16 to 2023-04-22: 3913 records | Total: 62608
+2025-12-07 11:45:16,096 - data_extraction - INFO - Week 2023-04-23 to 2023-04-29: 3913 records | Total: 66521
+2025-12-07 11:45:17,184 - data_extraction - INFO - Week 2023-04-30 to 2023-05-06: 3913 records | Total: 70434
+2025-12-07 11:45:18,241 - data_extraction - INFO - Week 2023-05-07 to 2023-05-13: 3913 records | Total: 74347
+2025-12-07 11:45:19,341 - data_extraction - INFO - Week 2023-05-14 to 2023-05-20: 3913 records | Total: 78260
+2025-12-07 11:45:20,357 - data_extraction - INFO - Week 2023-05-21 to 2023-05-27: 3913 records | Total: 82173
+2025-12-07 11:45:21,408 - data_extraction - INFO - Week 2023-05-28 to 2023-06-03: 3913 records | Total: 86086
+2025-12-07 11:45:22,445 - data_extraction - INFO - Week 2023-06-04 to 2023-06-10: 3913 records | Total: 89999
+2025-12-07 11:45:23,621 - data_extraction - INFO - Week 2023-06-11 to 2023-06-17: 3913 records | Total: 93912
+2025-12-07 11:45:24,685 - data_extraction - INFO - Week 2023-06-18 to 2023-06-24: 3913 records | Total: 97825
+2025-12-07 11:45:25,989 - data_extraction - INFO - Week 2023-06-25 to 2023-07-01: 3913 records | Total: 101738
+2025-12-07 11:45:26,989 - data_extraction - INFO - Week 2023-07-02 to 2023-07-08: 3913 records | Total: 105651
+2025-12-07 11:45:27,995 - data_extraction - INFO - Week 2023-07-09 to 2023-07-15: 3913 records | Total: 109564
+2025-12-07 11:45:29,155 - data_extraction - INFO - Week 2023-07-16 to 2023-07-22: 3913 records | Total: 113477
+2025-12-07 11:45:30,239 - data_extraction - INFO - Week 2023-07-23 to 2023-07-29: 3913 records | Total: 117390
+2025-12-07 11:45:31,235 - data_extraction - INFO - Week 2023-07-30 to 2023-08-05: 3913 records | Total: 121303
+2025-12-07 11:45:32,364 - data_extraction - INFO - Week 2023-08-06 to 2023-08-12: 3913 records | Total: 125216
+2025-12-07 11:45:33,409 - data_extraction - INFO - Week 2023-08-13 to 2023-08-19: 3913 records | Total: 129129
+2025-12-07 11:45:34,509 - data_extraction - INFO - Week 2023-08-20 to 2023-08-26: 3913 records | Total: 133042
+2025-12-07 11:45:35,703 - data_extraction - INFO - Week 2023-08-27 to 2023-09-02: 3913 records | Total: 136955
+2025-12-07 11:45:36,731 - data_extraction - INFO - Week 2023-09-03 to 2023-09-09: 3913 records | Total: 140868
+2025-12-07 11:45:37,793 - data_extraction - INFO - Week 2023-09-10 to 2023-09-16: 3913 records | Total: 144781
+2025-12-07 11:45:38,821 - data_extraction - INFO - Week 2023-09-17 to 2023-09-23: 3913 records | Total: 148694
+2025-12-07 11:45:39,899 - data_extraction - INFO - Week 2023-09-24 to 2023-09-30: 3913 records | Total: 152607
+2025-12-07 11:45:41,019 - data_extraction - INFO - Week 2023-10-01 to 2023-10-07: 3913 records | Total: 156520
+2025-12-07 11:45:42,105 - data_extraction - INFO - Week 2023-10-08 to 2023-10-14: 3913 records | Total: 160433
+2025-12-07 11:45:43,203 - data_extraction - INFO - Week 2023-10-15 to 2023-10-21: 3913 records | Total: 164346
+2025-12-07 11:45:44,267 - data_extraction - INFO - Week 2023-10-22 to 2023-10-28: 3913 records | Total: 168259
+2025-12-07 11:45:45,333 - data_extraction - INFO - Week 2023-10-29 to 2023-11-04: 3913 records | Total: 172172
+2025-12-07 11:45:46,434 - data_extraction - INFO - Week 2023-11-05 to 2023-11-11: 3913 records | Total: 176085
+2025-12-07 11:45:47,530 - data_extraction - INFO - Week 2023-11-12 to 2023-11-18: 3913 records | Total: 179998
+2025-12-07 11:45:48,607 - data_extraction - INFO - Week 2023-11-19 to 2023-11-25: 3913 records | Total: 183911
+2025-12-07 11:45:49,853 - data_extraction - INFO - Week 2023-11-26 to 2023-12-02: 3913 records | Total: 187824
+2025-12-07 11:45:50,901 - data_extraction - INFO - Week 2023-12-03 to 2023-12-09: 3913 records | Total: 191737
+2025-12-07 11:45:52,010 - data_extraction - INFO - Week 2023-12-10 to 2023-12-16: 3913 records | Total: 195650
+2025-12-07 11:45:53,078 - data_extraction - INFO - Week 2023-12-17 to 2023-12-23: 3913 records | Total: 199563
+2025-12-07 11:45:54,120 - data_extraction - INFO - Week 2023-12-24 to 2023-12-30: 3913 records | Total: 203476
+2025-12-07 11:45:55,207 - data_extraction - INFO - Week 2023-12-31 to 2024-01-06: 3913 records | Total: 207389
+2025-12-07 11:45:56,315 - data_extraction - INFO - Week 2024-01-07 to 2024-01-13: 3913 records | Total: 211302
+2025-12-07 11:45:57,404 - data_extraction - INFO - Week 2024-01-14 to 2024-01-20: 3913 records | Total: 215215
+2025-12-07 11:45:58,495 - data_extraction - INFO - Week 2024-01-21 to 2024-01-27: 3913 records | Total: 219128
+2025-12-07 11:45:59,610 - data_extraction - INFO - Week 2024-01-28 to 2024-02-03: 3913 records | Total: 223041
+2025-12-07 11:46:00,689 - data_extraction - INFO - Week 2024-02-04 to 2024-02-10: 3913 records | Total: 226954
+2025-12-07 11:46:01,770 - data_extraction - INFO - Week 2024-02-11 to 2024-02-17: 3913 records | Total: 230867
+2025-12-07 11:46:02,810 - data_extraction - INFO - Week 2024-02-18 to 2024-02-24: 3913 records | Total: 234780
+2025-12-07 11:46:03,907 - data_extraction - INFO - Week 2024-02-25 to 2024-03-02: 3913 records | Total: 238693
+2025-12-07 11:46:05,044 - data_extraction - INFO - Week 2024-03-03 to 2024-03-09: 3913 records | Total: 242606
+2025-12-07 11:46:06,107 - data_extraction - INFO - Week 2024-03-10 to 2024-03-16: 3913 records | Total: 246519
+2025-12-07 11:46:07,173 - data_extraction - INFO - Week 2024-03-17 to 2024-03-23: 3913 records | Total: 250432
+2025-12-07 11:46:08,240 - data_extraction - INFO - Week 2024-03-24 to 2024-03-30: 3913 records | Total: 254345
+2025-12-07 11:46:09,380 - data_extraction - INFO - Week 2024-03-31 to 2024-04-06: 3913 records | Total: 258258
+2025-12-07 11:46:10,616 - data_extraction - INFO - Week 2024-04-07 to 2024-04-13: 3913 records | Total: 262171
+2025-12-07 11:46:11,695 - data_extraction - INFO - Week 2024-04-14 to 2024-04-20: 3913 records | Total: 266084
+2025-12-07 11:46:12,852 - data_extraction - INFO - Week 2024-04-21 to 2024-04-27: 3913 records | Total: 269997
+2025-12-07 11:46:14,058 - data_extraction - INFO - Week 2024-04-28 to 2024-05-04: 3913 records | Total: 273910
+2025-12-07 11:46:15,122 - data_extraction - INFO - Week 2024-05-05 to 2024-05-11: 3913 records | Total: 277823
+2025-12-07 11:46:16,209 - data_extraction - INFO - Week 2024-05-12 to 2024-05-18: 3913 records | Total: 281736
+2025-12-07 11:46:17,372 - data_extraction - INFO - Week 2024-05-19 to 2024-05-25: 3913 records | Total: 285649
+2025-12-07 11:46:18,461 - data_extraction - INFO - Week 2024-05-26 to 2024-06-01: 3913 records | Total: 289562
+2025-12-07 11:46:19,628 - data_extraction - INFO - Week 2024-06-02 to 2024-06-08: 3913 records | Total: 293475
+2025-12-07 11:46:20,684 - data_extraction - INFO - Week 2024-06-09 to 2024-06-15: 3913 records | Total: 297388
+2025-12-07 11:46:21,753 - data_extraction - INFO - Week 2024-06-16 to 2024-06-22: 3913 records | Total: 301301
+2025-12-07 11:46:22,852 - data_extraction - INFO - Week 2024-06-23 to 2024-06-29: 3913 records | Total: 305214
+2025-12-07 11:46:23,940 - data_extraction - INFO - Week 2024-06-30 to 2024-07-06: 3913 records | Total: 309127
+2025-12-07 11:46:25,027 - data_extraction - INFO - Week 2024-07-07 to 2024-07-13: 3913 records | Total: 313040
+2025-12-07 11:46:26,122 - data_extraction - INFO - Week 2024-07-14 to 2024-07-20: 3913 records | Total: 316953
+2025-12-07 11:46:27,250 - data_extraction - INFO - Week 2024-07-21 to 2024-07-27: 3913 records | Total: 320866
+2025-12-07 11:46:28,313 - data_extraction - INFO - Week 2024-07-28 to 2024-08-03: 3913 records | Total: 324779
+2025-12-07 11:46:29,472 - data_extraction - INFO - Week 2024-08-04 to 2024-08-10: 3913 records | Total: 328692
+2025-12-07 11:46:30,516 - data_extraction - INFO - Week 2024-08-11 to 2024-08-17: 3913 records | Total: 332605
+2025-12-07 11:46:31,530 - data_extraction - INFO - Week 2024-08-18 to 2024-08-24: 3913 records | Total: 336518
+2025-12-07 11:46:32,543 - data_extraction - INFO - Week 2024-08-25 to 2024-08-31: 3913 records | Total: 340431
+2025-12-07 11:46:33,616 - data_extraction - INFO - Week 2024-09-01 to 2024-09-07: 3913 records | Total: 344344
+2025-12-07 11:46:34,643 - data_extraction - INFO - Week 2024-09-08 to 2024-09-14: 3913 records | Total: 348257
+2025-12-07 11:46:35,751 - data_extraction - INFO - Week 2024-09-15 to 2024-09-21: 3913 records | Total: 352170
+2025-12-07 11:46:36,755 - data_extraction - INFO - Week 2024-09-22 to 2024-09-28: 3913 records | Total: 356083
+2025-12-07 11:46:37,840 - data_extraction - INFO - Week 2024-09-29 to 2024-10-05: 3913 records | Total: 359996
+2025-12-07 11:46:38,914 - data_extraction - INFO - Week 2024-10-06 to 2024-10-12: 3913 records | Total: 363909
+2025-12-07 11:46:40,088 - data_extraction - INFO - Week 2024-10-13 to 2024-10-19: 3913 records | Total: 367822
+2025-12-07 11:46:41,157 - data_extraction - INFO - Week 2024-10-20 to 2024-10-26: 3913 records | Total: 371735
+2025-12-07 11:46:42,299 - data_extraction - INFO - Week 2024-10-27 to 2024-11-02: 3913 records | Total: 375648
+2025-12-07 11:46:43,341 - data_extraction - INFO - Week 2024-11-03 to 2024-11-09: 3913 records | Total: 379561
+2025-12-07 11:46:44,408 - data_extraction - INFO - Week 2024-11-10 to 2024-11-16: 3913 records | Total: 383474
+2025-12-07 11:46:45,547 - data_extraction - INFO - Week 2024-11-17 to 2024-11-23: 3913 records | Total: 387387
+2025-12-07 11:46:46,575 - data_extraction - INFO - Week 2024-11-24 to 2024-11-30: 3913 records | Total: 391300
+2025-12-07 11:46:49,458 - data_extraction - INFO - Week 2024-12-01 to 2024-12-07: 3913 records | Total: 395213
+2025-12-07 11:46:50,686 - data_extraction - INFO - Week 2024-12-08 to 2024-12-14: 3913 records | Total: 399126
+2025-12-07 11:46:51,731 - data_extraction - INFO - Week 2024-12-15 to 2024-12-21: 3913 records | Total: 403039
+2025-12-07 11:46:52,830 - data_extraction - INFO - Week 2024-12-22 to 2024-12-28: 3913 records | Total: 406952
+2025-12-07 11:46:53,903 - data_extraction - INFO - Week 2024-12-29 to 2025-01-04: 3913 records | Total: 410865
+2025-12-07 11:47:41,661 - data_extraction - INFO - TOTAL FETCHED: 410865 records
+2025-12-07 11:47:42,288 - data_extraction - INFO - Final: 410865 records from 2023-01-07 23:00:00 to 2024-12-31 23:00:00
+2025-12-07 11:47:42,303 - __main__ - INFO - ✅ Ridership: 410,865 records
+2025-12-07 11:47:42,304 - __main__ - INFO - 
+Extracting weather data...
+2025-12-07 11:47:42,950 - data_extraction - INFO - Weather: 1072 records from 2023-01-01 to 2025-12-07
+2025-12-07 11:47:42,951 - __main__ - INFO - ✅ Weather: 1,072 records
+2025-12-07 11:47:42,951 - __main__ - INFO - 
+============================================================
+2025-12-07 11:47:42,951 - __main__ - INFO - PHASE 2: DATA TRANSFORMATION
+2025-12-07 11:47:42,951 - __main__ - INFO - ============================================================
+2025-12-07 11:47:42,951 - data_transformation - INFO - ============================================================
+2025-12-07 11:47:42,951 - data_transformation - INFO - STARTING DATA TRANSFORMATION AND MERGE
+2025-12-07 11:47:42,951 - data_transformation - INFO - ============================================================
+2025-12-07 11:47:42,951 - data_transformation - INFO - Validating ridership data quality...
+2025-12-07 11:47:42,952 - data_transformation - INFO - Running schema validation...
+2025-12-07 11:47:42,952 - data_transformation - INFO - Checking for null values...
+2025-12-07 11:47:43,065 - data_transformation - INFO - Checking for duplicates (full row)...
+2025-12-07 11:47:43,237 - data_transformation - INFO - Date range: 2023-01-07 23:00:00 to 2024-12-31 23:00:00
+2025-12-07 11:47:43,244 - data_transformation - INFO - ridership: 4038 potential outliers detected
+2025-12-07 11:47:43,248 - data_transformation - INFO - transfers: 3808 potential outliers detected
+2025-12-07 11:47:43,249 - data_transformation - INFO - Quality validation complete: 100.00% data retained
+2025-12-07 11:47:43,249 - data_transformation - INFO - Status: PASSED
+2025-12-07 11:47:43,249 - data_transformation - INFO - Validating weather data quality...
+2025-12-07 11:47:43,249 - data_transformation - INFO - Running schema validation...
+2025-12-07 11:47:43,249 - data_transformation - INFO - Checking for null values...
+2025-12-07 11:47:43,250 - data_transformation - INFO - Checking for duplicates (full row)...
+2025-12-07 11:47:43,251 - data_transformation - INFO - Date range: 2023-01-01 00:00:00 to 2025-12-07 00:00:00
+2025-12-07 11:47:43,252 - data_transformation - INFO - temperature_mean: 21 potential outliers detected
+2025-12-07 11:47:43,253 - data_transformation - INFO - precipitation: 11 potential outliers detected
+2025-12-07 11:47:43,253 - data_transformation - INFO - windspeed: 21 potential outliers detected
+2025-12-07 11:47:43,254 - data_transformation - INFO - Quality validation complete: 100.00% data retained
+2025-12-07 11:47:43,254 - data_transformation - INFO - Status: PASSED
+2025-12-07 11:47:43,481 - data_transformation - INFO - Adding derived features...
+2025-12-07 11:47:43,494 - data_transformation - INFO - ✅ Converted temperature: 12.6°C → 54.7°F
+2025-12-07 11:47:43,497 - data_transformation - INFO - ✅ Converted precipitation: 6.08mm → 0.24in
+2025-12-07 11:47:43,499 - data_transformation - INFO - ✅ Converted windspeed: 21.5m/s → 48.0mph
+2025-12-07 11:47:43,634 - data_transformation - INFO - ✅ Added 27 total features
+2025-12-07 11:47:43,878 - data_transformation - INFO - ============================================================
+2025-12-07 11:47:43,879 - data_transformation - INFO - TRANSFORMATION COMPLETE
+2025-12-07 11:47:43,879 - data_transformation - INFO - Final dataset: 410865 rows × 30 columns
+2025-12-07 11:47:43,879 - data_transformation - INFO - Final quality score: 100.00%
+2025-12-07 11:47:43,880 - data_transformation - INFO - Temperature range: 15.1°F to 82.4°F
+2025-12-07 11:47:43,881 - data_transformation - INFO - Precipitation range: 0.00in to 2.50in
+2025-12-07 11:47:43,881 - data_transformation - INFO - ============================================================
+2025-12-07 11:47:43,896 - __main__ - INFO - ✅ Temperature converted: 54.7°F average
+2025-12-07 11:47:43,897 - __main__ - INFO - ✅ Precipitation converted: 0.239in average
+2025-12-07 11:47:43,897 - __main__ - INFO - 
+============================================================
+2025-12-07 11:47:43,897 - __main__ - INFO - PHASE 3: DATA LOADING
+2025-12-07 11:47:43,897 - __main__ - INFO - ============================================================
+2025-12-07 11:47:46,935 - data_loading - INFO - ✅ Saved 410865 records to data/processed\transit_weather_20251207_114743_20251207_114743.csv (85.97 MB)
+2025-12-07 11:47:46,936 - data_loading - INFO - Creating summary statistics...
+2025-12-07 11:47:46,939 - data_loading - INFO - ✅ Saved 9 records to data/processed\summary_stats_20251207_114743_20251207_114746.csv (0.00 MB)
+2025-12-07 11:47:46,946 - botocore.credentials - INFO - Found credentials in environment variables.
+2025-12-07 11:47:54,156 - data_loading - INFO - ✅ Uploaded data/processed\transit_weather_20251207_114743_20251207_114743.csv to s3://nyc-transit-weather/transit_weather/transit_weather_20251207_114743_20251207_114743.csv
+2025-12-07 11:47:54,963 - data_loading - INFO - ✅ Uploaded data/processed\summary_stats_20251207_114743_20251207_114746.csv to s3://nyc-transit-weather/transit_weather/summary_stats_20251207_114743_20251207_114746.csv
+2025-12-07 11:47:54,964 - __main__ - INFO - ✅ Uploaded files to S3
+2025-12-07 11:47:54,964 - __main__ - INFO - Loading to PostgreSQL database...
+2025-12-07 11:47:54,965 - data_loading - INFO - Loading data to PostgreSQL table: transit_weather_analytics
+2025-12-07 11:47:59,157 - data_loading - ERROR - Failed to load to PostgreSQL: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 5432 failed: Connection refused (0x0000274D/10061)
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "localhost" (127.0.0.1), port 5432 failed: Connection refused (0x0000274D/10061)
+	Is the server running on that host and accepting TCP/IP connections?
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-12-07 11:47:59,157 - data_loading - INFO - Falling back to CSV save...
+2025-12-07 11:48:02,116 - data_loading - INFO - ✅ Saved 410865 records to data/processed\transit_weather_analytics_backup_20251207_114759.csv (85.97 MB)
+2025-12-07 11:48:02,116 - __main__ - WARNING - ⚠️  Database load failed (data saved to CSV)
+2025-12-07 11:48:02,116 - __main__ - INFO - 
+============================================================
+2025-12-07 11:48:02,116 - __main__ - INFO - PIPELINE SUMMARY
+2025-12-07 11:48:02,116 - __main__ - INFO - ============================================================
+2025-12-07 11:48:02,248 - __main__ - INFO - Status: SUCCESS ✅
+2025-12-07 11:48:02,248 - __main__ - INFO - Records Processed: 410,865
+2025-12-07 11:48:02,249 - __main__ - INFO - Total Duration: 184.54s
+2025-12-07 11:48:02,249 - __main__ - INFO -   - Extraction: 165.37s
+2025-12-07 11:48:02,249 - __main__ - INFO -   - Transformation: 0.95s
+2025-12-07 11:48:02,249 - __main__ - INFO -   - Loading: 18.22s
+2025-12-07 11:48:02,249 - __main__ - INFO - Quality Score: 100.00%
+2025-12-07 11:48:02,249 - __main__ - INFO - Success Rate: 100.00%
+2025-12-07 11:48:02,249 - __main__ - INFO - ============================================================
+2025-12-07 11:48:02,250 - __main__ - INFO - 📊 Pipeline metrics saved to data/processed/pipeline_metrics_20251207_114802.json
+2025-12-07 11:48:02,250 - __main__ - INFO - 
+🎉 PIPELINE COMPLETED SUCCESSFULLY!

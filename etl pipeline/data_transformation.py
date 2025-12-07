@@ -138,6 +138,7 @@ class DataTransformer:
     def add_derived_features(self, df: pd.DataFrame) -> pd.DataFrame:
         """
         Add calculated and derived features
+        FIXED: Proper unit conversions applied FIRST
         
         Args:
             df: Input DataFrame
@@ -153,8 +154,29 @@ class DataTransformer:
         
         # Ensure date is datetime
         df['date'] = pd.to_datetime(df['date'])
+
+        # ===================================================================
+        # CRITICAL: UNIT CONVERSIONS FIRST (before any other calculations)
+        # ===================================================================
         
-        # Time-based features
+        # Convert Celsius to Fahrenheit
+        if 'temperature_mean' in df.columns:
+            df['temperature_f'] = (df['temperature_mean'] * 9/5) + 32
+            logger.info(f"✅ Converted temperature: {df['temperature_mean'].mean():.1f}°C → {df['temperature_f'].mean():.1f}°F")
+        
+        # Convert mm to inches
+        if 'precipitation' in df.columns:
+            df['precipitation_in'] = df['precipitation'] / 25.4  # mm → inches
+            logger.info(f"✅ Converted precipitation: {df['precipitation'].mean():.2f}mm → {df['precipitation_in'].mean():.2f}in")
+        
+        # Convert m/s to mph for windspeed (optional but useful)
+        if 'windspeed' in df.columns:
+            df['windspeed_mph'] = df['windspeed'] * 2.237  # m/s → mph
+            logger.info(f"✅ Converted windspeed: {df['windspeed'].mean():.1f}m/s → {df['windspeed_mph'].mean():.1f}mph")
+        
+        # ===================================================================
+        # TIME-BASED FEATURES
+        # ===================================================================
         df['year'] = df['date'].dt.year
         df['month'] = df['date'].dt.month
         df['day'] = df['date'].dt.day
@@ -173,28 +195,39 @@ class DataTransformer:
             9: 'Fall', 10: 'Fall', 11: 'Fall'
         })
         
-        # Weather-based features (if weather columns exist)
-        if 'temperature_mean' in df.columns:
+        # ===================================================================
+        # WEATHER CATEGORIES (using CONVERTED values)
+        # ===================================================================
+        
+        # Temperature categories (using Fahrenheit)
+        if 'temperature_f' in df.columns:
             df['temp_category'] = pd.cut(
-                df['temperature_mean'],
+                df['temperature_f'],
                 bins=[-np.inf, 32, 50, 68, 85, np.inf],
-                labels=['Very Cold', 'Cold', 'Mild', 'Warm', 'Hot']
+                labels=['Freezing', 'Cold', 'Mild', 'Warm', 'Hot']
             )
         
-        if 'precipitation' in df.columns:
+        # Precipitation categories (using inches)
+        if 'precipitation_in' in df.columns:
             df['rain_category'] = pd.cut(
-                df['precipitation'],
-                bins=[-np.inf, 0.1, 2, 5, np.inf],
+                df['precipitation_in'],
+                bins=[-np.inf, 0.01, 0.1, 0.5, np.inf],
                 labels=['No Rain', 'Light Rain', 'Moderate Rain', 'Heavy Rain']
             )
-            df['is_rainy'] = (df['precipitation'] > 0.1).astype(int)
+            df['is_rainy'] = (df['precipitation_in'] > 0.01).astype(int)
         
-        # Weather impact score
-        if all(col in df.columns for col in ['temperature_mean', 'precipitation', 'windspeed']):
-            temp_norm = (df['temperature_mean'] - df['temperature_mean'].mean()) / df['temperature_mean'].std()
-            precip_norm = df['precipitation'] / df['precipitation'].max()
-            wind_norm = df['windspeed'] / df['windspeed'].max()
-            df['weather_impact_score'] = abs(temp_norm) * 0.4 + precip_norm * 0.4 + wind_norm * 0.2
+        # Weather impact score (using converted units)
+        if all(col in df.columns for col in ['temperature_f', 'precipitation_in', 'windspeed_mph']):
+            # Normalize around comfortable conditions (65°F)
+            temp_discomfort = abs(df['temperature_f'] - 65) / 30  # 0 = comfortable, 1 = extreme
+            precip_norm = np.clip(df['precipitation_in'] / 0.5, 0, 1)  # 0.5"+ is significant
+            wind_norm = np.clip(df['windspeed_mph'] / 25, 0, 1)  # 25mph+ is significant
+            
+            df['weather_impact_score'] = (
+                temp_discomfort * 0.4 + 
+                precip_norm * 0.4 + 
+                wind_norm * 0.2
+            )
             
             df['weather_condition'] = pd.cut(
                 df['weather_impact_score'],
@@ -202,7 +235,7 @@ class DataTransformer:
                 labels=['Good', 'Moderate', 'Poor']
             )
         
-        logger.info(f"Added {len([c for c in df.columns if c not in ['date']])} derived features")
+        logger.info(f"✅ Added {len([c for c in df.columns if c not in ['date']])} total features")
         return df
     
     def transform_and_merge(
@@ -212,6 +245,7 @@ class DataTransformer:
     ) -> pd.DataFrame:
         """
         Transform and merge ridership and weather data
+        FIXED: Ensures conversions are applied to final output
         """
         logger.info("=" * 60)
         logger.info("STARTING DATA TRANSFORMATION AND MERGE")
@@ -225,7 +259,7 @@ class DataTransformer:
             logger.error("Cannot merge - one or both datasets are empty")
             return pd.DataFrame()
         
-        # Standardize date columns
+        # Standardize date columns for merge
         ridership_clean['date'] = pd.to_datetime(ridership_clean['date']).dt.date
         weather_clean['date'] = pd.to_datetime(weather_clean['date']).dt.date
         
@@ -242,13 +276,15 @@ class DataTransformer:
             logger.error("Merge resulted in empty dataset - no matching dates")
             return merged_df
         
+        # Convert back to datetime for feature engineering
         merged_df['date'] = pd.to_datetime(merged_df['date'])
         
-        # Add derived features
+        # Add derived features (includes unit conversions)
         merged_df = self.add_derived_features(merged_df)
         
         # Rolling averages for ridership
         if 'ridership' in merged_df.columns:
+            merged_df = merged_df.sort_values('date')
             merged_df['ridership_7day_avg'] = merged_df['ridership'].rolling(window=7, min_periods=1).mean()
             merged_df['ridership_30day_avg'] = merged_df['ridership'].rolling(window=30, min_periods=1).mean()
         
@@ -260,6 +296,13 @@ class DataTransformer:
         logger.info("TRANSFORMATION COMPLETE")
         logger.info(f"Final dataset: {merged_df.shape[0]} rows × {merged_df.shape[1]} columns")
         logger.info(f"Final quality score: {final_quality_score:.2f}%")
+        
+        # Log unit conversion confirmation
+        if 'temperature_f' in merged_df.columns:
+            logger.info(f"Temperature range: {merged_df['temperature_f'].min():.1f}°F to {merged_df['temperature_f'].max():.1f}°F")
+        if 'precipitation_in' in merged_df.columns:
+            logger.info(f"Precipitation range: {merged_df['precipitation_in'].min():.2f}in to {merged_df['precipitation_in'].max():.2f}in")
+        
         logger.info("=" * 60)
         
         return merged_df
@@ -288,6 +331,12 @@ def main():
         print(merged_df.head())
         print(f"\nShape: {merged_df.shape}")
         print(f"\nColumns: {list(merged_df.columns)}")
+        
+        # Show unit conversions
+        if 'temperature_f' in merged_df.columns:
+            print(f"\nTemperature: {merged_df['temperature_f'].mean():.1f}°F (avg)")
+        if 'precipitation_in' in merged_df.columns:
+            print(f"Precipitation: {merged_df['precipitation_in'].mean():.3f}in (avg)")
         
         print("\n📊 Quality Report:")
         for dataset, metrics in transformer.get_quality_report().items():

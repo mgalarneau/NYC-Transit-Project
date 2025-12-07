@@ -165,10 +165,13 @@ class DataLoader:
             summary['metric'].append('Avg Daily Ridership'); summary['value'].append(f"{df['ridership'].mean():,.0f}")
             summary['metric'].append('Max Ridership'); summary['value'].append(f"{df['ridership'].max():,.0f}")
             summary['metric'].append('Min Ridership'); summary['value'].append(f"{df['ridership'].min():,.0f}")
-        if 'temperature_mean' in df.columns:
-            summary['metric'].append('Avg Temperature (°F)'); summary['value'].append(f"{df['temperature_mean'].mean():.1f}")
-        if 'precipitation' in df.columns:
-            summary['metric'].append('Avg Precipitation (mm)'); summary['value'].append(f"{df['precipitation'].mean():.2f}")
+        if 'temperature_f' in df.columns:
+            summary['metric'].append('Avg Temperature (°F)')
+            summary['value'].append(f"{df['temperature_f'].mean():.1f}")
+        if 'precipitation_in' in df.columns:
+            summary['metric'].append('Avg Precipitation (in)')
+            summary['value'].append(f"{df['precipitation_in'].mean():.2f}")
+
         return pd.DataFrame(summary)
 
     # -------------------------

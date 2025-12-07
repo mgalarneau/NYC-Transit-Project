@@ -1,6 +1,6 @@
 """
-Data Extraction - FINAL WORKING VERSION
-Fetches data properly across multiple days
+Data Extraction Module
+Fetches ridership and weather data from external APIs with retry logic
 """
 
 import os
