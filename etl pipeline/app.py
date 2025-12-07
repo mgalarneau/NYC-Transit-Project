@@ -1,4 +1,3 @@
-
 # Load helpful libraries
 
 import streamlit as st
@@ -7,6 +6,7 @@ import plotly.express as px
 import plotly.figure_factory as ff
 from datetime import datetime
 import os
+import json
 from data_extraction import DataExtractor
 from data_transformation import DataTransformer
 
@@ -21,29 +21,31 @@ CACHE_FILE = "merged_data.parquet"
 def load_data():
     extractor = DataExtractor()
     transformer = DataTransformer()
+    quality_report = {}
 
+    # Load cached data if it exists
     if os.path.exists(CACHE_FILE):
         st.info("Loading cached merged data...")
         merged_df = pd.read_parquet(CACHE_FILE)
+
+        # Recompute quality report for cached data
+        transformer.validate_data_quality(merged_df.copy(), "merged")
         quality_report = transformer.get_quality_report()
-        
-        # CRITICAL FIX: Check if conversions exist, if not, reprocess
+
+        # Check if conversions exist, if not, reprocess
         needs_reprocess = False
-        if 'temperature_f' not in merged_df.columns:
-            st.warning("Cached data missing Fahrenheit conversion - reprocessing...")
-            needs_reprocess = True
-        if 'precipitation_in' not in merged_df.columns:
-            st.warning("Cached data missing inches conversion - reprocessing...")
-            needs_reprocess = True
-            
+        for col in ['temperature_f', 'precipitation_in', 'windspeed_mph']:
+            if col not in merged_df.columns:
+                st.warning(f"Cached data missing {col} - reprocessing...")
+                needs_reprocess = True
+
         if needs_reprocess:
             os.remove(CACHE_FILE)
             st.info("Regenerating data with proper unit conversions...")
-            # Fall through to fetch fresh data below
 
+    # If cache missing or reprocessing needed
     if not os.path.exists(CACHE_FILE):
         st.info("Fetching fresh data with unit conversions...")
-
         ridership_df = extractor.fetch_ridership_data(
             start_date="2023-01-01",
             end_date="2024-12-31",
@@ -54,20 +56,16 @@ def load_data():
             end_date="2024-12-31"
         )
 
-        # Transform and merge (this applies unit conversions)
+        # Transform and merge
         merged_df = transformer.transform_and_merge(ridership_df, weather_df)
 
-        # Save to cache
+        # Save cache
         merged_df.to_parquet(CACHE_FILE, index=False)
-        quality_report = transformer.get_quality_report()
-        
-        # Verify conversions were applied
-        if 'temperature_f' in merged_df.columns:
-            st.success(f"Temperature converted: {merged_df['temperature_f'].mean():.1f}°F average")
-        if 'precipitation_in' in merged_df.columns:
-            st.success(f"Precipitation converted: {merged_df['precipitation_in'].mean():.3f}in average")
 
-    # Precompute for filters
+        # Compute quality report
+        quality_report = transformer.compute_quality_report_for_df(merged_df, name="merged")
+
+    # Precompute filters
     merged_df["ridership"] = pd.to_numeric(merged_df["ridership"], errors="coerce")
     merged_df["year"] = merged_df["date"].dt.year
     merged_df["month"] = merged_df["date"].dt.month
@@ -76,6 +74,8 @@ def load_data():
 
     return merged_df, quality_report
 
+
+# LOAD DATA
 
 with st.spinner("Loading data..."):
     merged_df, quality_report = load_data()
@@ -86,7 +86,9 @@ if merged_df.empty:
 
 st.success(f"Loaded {len(merged_df):,} total records")
 
-# Display unit confirmation
+
+# DISPLAY UNITS
+
 col_info1, col_info2 = st.columns(2)
 with col_info1:
     if 'temperature_f' in merged_df.columns:
@@ -135,42 +137,11 @@ filtered_df = merged_df[
 # SUMMARY STATISTICS
 
 st.header("Overview of Selected Period")
-
 col1, col2, col3, col4 = st.columns(4)
 col1.metric("Filtered Records", f"{len(filtered_df):,}")
-
 max_r = filtered_df["ridership"].max()
 col3.metric("Max Ridership", f"{max_r:,.0f}" if not pd.isna(max_r) else "–")
-
-if len(filtered_df) > 0:
-    span = (filtered_df["date"].max() - filtered_df["date"].min()).days
-else:
-    span = "–"
-col4.metric("Date Span (days)", span)
-
-# Additional weather metrics
-st.subheader("Weather Summary")
-col1, col2, col3 = st.columns(3)
-
-if 'temperature_f' in filtered_df.columns:
-    avg_temp = filtered_df['temperature_f'].mean()
-    col1.metric("Avg Temperature", f"{avg_temp:.1f}°F" if not pd.isna(avg_temp) else "–")
-else:
-    col1.metric("Avg Temperature", "Not Available")
-
-if 'precipitation_in' in filtered_df.columns:
-    avg_precip = filtered_df['precipitation_in'].mean()
-    col2.metric("Avg Precipitation", f"{avg_precip:.3f}in" if not pd.isna(avg_precip) else "–")
-else:
-    col2.metric("Avg Precipitation", "Not Available")
-
-if 'windspeed_mph' in filtered_df.columns:
-    avg_wind = filtered_df['windspeed_mph'].mean()
-    col3.metric("Avg Wind Speed", f"{avg_wind:.1f} mph" if not pd.isna(avg_wind) else "–")
-elif 'windspeed' in filtered_df.columns:
-    avg_wind = filtered_df['windspeed'].mean()
-    col3.metric("Avg Wind Speed", f"{avg_wind:.1f} m/s" if not pd.isna(avg_wind) else "–")
-
+col4.metric("Date Span (days)", (filtered_df["date"].max() - filtered_df["date"].min()).days if len(filtered_df) > 0 else "–")
 
 # SECTION: RIDERSHIP + WEATHER TOGETHER (DUAL-AXIS)
 
@@ -383,12 +354,17 @@ if 'weather_condition' in filtered_df.columns:
 available_cols = [col for col in display_cols if col in filtered_df.columns]
 st.dataframe(filtered_df[available_cols].head(100), use_container_width=True)
 
+
+# DATA QUALITY REPORT
+
 st.header("Data Quality Report")
 with st.expander("View Report"):
-    for name, metrics in quality_report.items():
-        st.markdown(f"### {name.upper()}")
-        st.table(pd.DataFrame(metrics.items(), columns=["Metric", "Value"]))
-
+    if quality_report:
+        for name, metrics in quality_report.items():
+            st.markdown(f"### {name.upper()}")
+            st.table(pd.DataFrame(metrics.items(), columns=["Metric", "Value"]))
+    else:
+        st.warning("No quality report available. Ensure data transformation ran successfully.")
 
 # DOWNLOAD DATA
 

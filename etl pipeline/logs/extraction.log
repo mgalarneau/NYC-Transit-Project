@@ -1095,3 +1095,66 @@ Traceback (most recent call last):
   File "C:\Users\megan\AppData\Roaming\Python\Python313\site-packages\tornado\websocket.py", line 1115, in wrapper
     raise WebSocketClosedError()
 tornado.websocket.WebSocketClosedError
+2025-12-07 13:02:56,570 - data_transformation - INFO - Validating merged data quality...
+2025-12-07 13:02:56,570 - data_transformation - INFO - Running schema validation...
+2025-12-07 13:02:56,570 - data_transformation - INFO - Checking for null values...
+2025-12-07 13:02:56,689 - data_transformation - INFO - Checking for duplicates (full row)...
+2025-12-07 13:02:56,972 - data_transformation - INFO - Date range: 2023-01-07 00:00:00 to 2024-12-31 00:00:00
+2025-12-07 13:02:56,993 - data_transformation - INFO - ridership: 5810 potential outliers detected
+2025-12-07 13:02:57,001 - data_transformation - INFO - transfers: 5221 potential outliers detected
+2025-12-07 13:02:57,006 - data_transformation - INFO - temperature_mean: 11480 potential outliers detected
+2025-12-07 13:02:57,012 - data_transformation - INFO - precipitation: 5740 potential outliers detected
+2025-12-07 13:02:57,018 - data_transformation - INFO - windspeed: 11480 potential outliers detected
+2025-12-07 13:02:57,023 - data_transformation - INFO - temperature_f: 11480 potential outliers detected
+2025-12-07 13:02:57,028 - data_transformation - INFO - precipitation_in: 5740 potential outliers detected
+2025-12-07 13:02:57,034 - data_transformation - INFO - windspeed_mph: 11480 potential outliers detected
+2025-12-07 13:02:57,055 - data_transformation - INFO - day_of_week: 3040 potential outliers detected
+2025-12-07 13:02:57,070 - data_transformation - INFO - is_weekend: 3040 potential outliers detected
+2025-12-07 13:02:57,075 - data_transformation - INFO - is_weekday: 3040 potential outliers detected
+2025-12-07 13:02:57,091 - data_transformation - INFO - weather_impact_score: 11480 potential outliers detected
+2025-12-07 13:02:57,097 - data_transformation - INFO - ridership_7day_avg: 5892 potential outliers detected
+2025-12-07 13:02:57,104 - data_transformation - INFO - ridership_30day_avg: 5999 potential outliers detected
+2025-12-07 13:02:57,104 - data_transformation - INFO - Quality validation complete: 100.00% data retained
+2025-12-07 13:02:57,104 - data_transformation - INFO - Status: PASSED
+2025-12-07 13:03:59,904 - data_transformation - INFO - Validating merged data quality...
+2025-12-07 13:03:59,905 - data_transformation - INFO - Running schema validation...
+2025-12-07 13:03:59,905 - data_transformation - INFO - Checking for null values...
+2025-12-07 13:04:00,025 - data_transformation - INFO - Checking for duplicates (full row)...
+2025-12-07 13:04:00,302 - data_transformation - INFO - Date range: 2023-01-07 00:00:00 to 2024-12-31 00:00:00
+2025-12-07 13:04:00,322 - data_transformation - INFO - ridership: 5810 potential outliers detected
+2025-12-07 13:04:00,329 - data_transformation - INFO - transfers: 5221 potential outliers detected
+2025-12-07 13:04:00,336 - data_transformation - INFO - temperature_mean: 11480 potential outliers detected
+2025-12-07 13:04:00,341 - data_transformation - INFO - precipitation: 5740 potential outliers detected
+2025-12-07 13:04:00,346 - data_transformation - INFO - windspeed: 11480 potential outliers detected
+2025-12-07 13:04:00,351 - data_transformation - INFO - temperature_f: 11480 potential outliers detected
+2025-12-07 13:04:00,357 - data_transformation - INFO - precipitation_in: 5740 potential outliers detected
+2025-12-07 13:04:00,362 - data_transformation - INFO - windspeed_mph: 11480 potential outliers detected
+2025-12-07 13:04:00,383 - data_transformation - INFO - day_of_week: 3040 potential outliers detected
+2025-12-07 13:04:00,397 - data_transformation - INFO - is_weekend: 3040 potential outliers detected
+2025-12-07 13:04:00,404 - data_transformation - INFO - is_weekday: 3040 potential outliers detected
+2025-12-07 13:04:00,420 - data_transformation - INFO - weather_impact_score: 11480 potential outliers detected
+2025-12-07 13:04:00,426 - data_transformation - INFO - ridership_7day_avg: 5892 potential outliers detected
+2025-12-07 13:04:00,433 - data_transformation - INFO - ridership_30day_avg: 5999 potential outliers detected
+2025-12-07 13:04:00,433 - data_transformation - INFO - Quality validation complete: 100.00% data retained
+2025-12-07 13:04:00,433 - data_transformation - INFO - Status: PASSED
+2025-12-07 13:05:11,346 - data_transformation - INFO - Validating merged data quality...
+2025-12-07 13:05:11,347 - data_transformation - INFO - Running schema validation...
+2025-12-07 13:05:11,347 - data_transformation - INFO - Checking for null values...
+2025-12-07 13:05:11,475 - data_transformation - INFO - Checking for duplicates (full row)...
+2025-12-07 13:05:11,752 - data_transformation - INFO - Date range: 2023-01-07 00:00:00 to 2024-12-31 00:00:00
+2025-12-07 13:05:11,773 - data_transformation - INFO - ridership: 5810 potential outliers detected
+2025-12-07 13:05:11,780 - data_transformation - INFO - transfers: 5221 potential outliers detected
+2025-12-07 13:05:11,785 - data_transformation - INFO - temperature_mean: 11480 potential outliers detected
+2025-12-07 13:05:11,789 - data_transformation - INFO - precipitation: 5740 potential outliers detected
+2025-12-07 13:05:11,795 - data_transformation - INFO - windspeed: 11480 potential outliers detected
+2025-12-07 13:05:11,800 - data_transformation - INFO - temperature_f: 11480 potential outliers detected
+2025-12-07 13:05:11,806 - data_transformation - INFO - precipitation_in: 5740 potential outliers detected
+2025-12-07 13:05:11,812 - data_transformation - INFO - windspeed_mph: 11480 potential outliers detected
+2025-12-07 13:05:11,833 - data_transformation - INFO - day_of_week: 3040 potential outliers detected
+2025-12-07 13:05:11,846 - data_transformation - INFO - is_weekend: 3040 potential outliers detected
+2025-12-07 13:05:11,852 - data_transformation - INFO - is_weekday: 3040 potential outliers detected
+2025-12-07 13:05:11,866 - data_transformation - INFO - weather_impact_score: 11480 potential outliers detected
+2025-12-07 13:05:11,873 - data_transformation - INFO - ridership_7day_avg: 5892 potential outliers detected
+2025-12-07 13:05:11,879 - data_transformation - INFO - ridership_30day_avg: 5999 potential outliers detected
+2025-12-07 13:05:11,879 - data_transformation - INFO - Quality validation complete: 100.00% data retained
+2025-12-07 13:05:11,879 - data_transformation - INFO - Status: PASSED
