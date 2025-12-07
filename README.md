@@ -2,7 +2,7 @@
 
 This **Streamlit-based dashboard** allows users to explore NYC MTA ridership alongside weather metrics through interactive visualizations, a data quality report, and filters for date, year, month, and day of the week.
 
-Designed for teams in operations, finance, and planning, the app shows how weather influences transit performance. By combining historical ridership with weather data, it aims to enhance forecasting accuracy, support smarter service planning, prevent overcrowding, and reduce unnecessary trips—driving operational savings in staffing and fuel.
+Designed for teams in operations, finance, and planning, the app shows how weather influences transit performance. By combining historical ridership with weather data, it aims to enhance forecasting accuracy, support smarter service planning, prevent overcrowding, and reduce unnecessary trips, driving operational savings in staffing and fuel.
 
 The ETL dashboard streamlines manual processes, establishes a scalable analytics foundation, and delivers insights on daily trends, weather impacts, and seasonal patterns, enabling data-driven decisions.
 
