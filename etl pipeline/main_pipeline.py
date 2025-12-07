@@ -47,7 +47,7 @@ class ETLPipeline:
         self,
         start_date: Optional[str] = None,
         end_date: Optional[str] = None,
-        max_records: int = 600000,  # FIXED: Added parameter to match app.py
+        max_records: int = 600000,
         save_to_db: bool = True
     ) -> Dict[str, Any]:
         """

@@ -1,6 +1,10 @@
 # NYC MTA Ridership + Weather Dashboard
 
-This is a **Streamlit-based dashboard** that allows users to explore NYC MTA ridership data in conjunction with weather metrics. The app provides interactive visualizations, a data quality report, and options to filter by date, year, month, and day of the week.
+This **Streamlit-based dashboard** allows users to explore NYC MTA ridership alongside weather metrics through interactive visualizations, a data quality report, and filters for date, year, month, and day of the week.
+
+Designed for teams in operations, finance, and planning, the app shows how weather influences transit performance. By combining historical ridership with weather data, it aims to enhance forecasting accuracy, support smarter service planning, prevent overcrowding, and reduce unnecessary trips—driving operational savings in staffing and fuel.
+
+The ETL dashboard streamlines manual processes, establishes a scalable analytics foundation, and delivers insights on daily trends, weather impacts, and seasonal patterns, enabling data-driven decisions.
 
 ---
 
@@ -13,7 +17,7 @@ The data used for this project comes from:
 1. [**MTA Ridership Data**](https://data.ny.gov/Transportation/MTA-Subway-Hourly-Ridership-2020-2024/wujg-7c2s/about_data): Hourly and daily ridership counts across NYC transit routes.
 2. [**Weather Data**](https://open-meteo.com/en/docs/historical-weather-api): Historical weather data including temperature, precipitation, and other relevant metrics.
 
-These datasets are fetched and merged programmatically to allow integrated analysis of ridership and weather trends over time.
+These datasets are fetched via APIs and merged to allow integrated analysis of ridership and weather trends over time.
 
 ### Analysis Process
 
